@@ -24,7 +24,7 @@ import org.cesm.airavata.utils.ServiceConstants;
 public class WorkflowInvoke extends AbstractClient{
 	protected static Logger log = Logger.getLogger(WorkflowInvoke.class);
 	
-	public void runWorkflow(Message message) throws AiravataAPIInvocationException, URISyntaxException,PropertyLoadingException,InvalidDataFormatException{
+	public String runWorkflow(Message message) throws AiravataAPIInvocationException, URISyntaxException,PropertyLoadingException,InvalidDataFormatException{
 		String experimentID = message.getExperimentID();
 		String hostName = message.getHostName();
 		int cpuCount = message.getProcessorCount();
@@ -34,7 +34,6 @@ public class WorkflowInvoke extends AbstractClient{
 		String serviceName = message.getServiceName();
 		String executionUser = message.getUserDN();
 	
-		log.info("Calling airavata client to run " + experimentID);
 		String targetBaseLoc = getProperties().getProperty(ServiceConstants.OUTPUTLOCATION)+ File.separatorChar + message.getExperimentID();
 		String username = getProperties().getProperty(ServiceConstants.AIRAVATA_USERNAME,"admin");
 		ArrayList<String> inputs = new ArrayList<String>();
@@ -48,7 +47,7 @@ public class WorkflowInvoke extends AbstractClient{
 	
 		
 		ExperimentAdvanceOptions options = createOptions(workflowName, executionUser, username, experimentID, serviceName, hostName, cpuCount, nodeCount, maxWallTime, queueName,targetBaseLoc,list);
-		runWorkflow( workflowName, inputs,options);
+		return runWorkflow( workflowName, inputs,options);
 		
 	}
 	/**
